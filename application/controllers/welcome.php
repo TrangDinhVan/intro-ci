@@ -1,11 +1,15 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class Welcome extends CI_Controller {
 	public function index(){
-        if( $this->session->userdata('user') ):
+        if( $this->session->userdata('sess_user') ):
             $data['page_title'] = 'Khu vực quản trị';
             $this->load_template('admin/index', $data);
         else:
-            $this->login_form();
+            $mes = null;
+            if( $this->session->userdata('login') === 0 ):
+                $mes = "Sai tên hoặc mật khẩu!!!";
+            endif;
+            $this->login_form($mes);
         endif;
 	}
     public function login_form($mes = null){
@@ -16,6 +20,7 @@ class Welcome extends CI_Controller {
             $data['mes'] = $mes;
         endif;
         $this->load_template('authen/login-form', $data);
+        $this->session->unset_userdata('login');
     }
 
     public function load_template( $name = '', $data = null ){

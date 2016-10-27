@@ -14,7 +14,10 @@ class C_User extends CI_Controller {
         $user_info['password'] = md5($this->input->post('password'));
         $login_user = $this->m_user->checkUser($user_info);
         if($login_user):
+            $this->session->set_userdata('login', 1);
             $this->session->set_userdata('sess_user', $login_user);
+        else:
+            $this->session->set_userdata('login', 0);
         endif;
         redirect(base_url('index.php/welcome'));
     }
